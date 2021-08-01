@@ -1,0 +1,20 @@
+{
+	"name": "Chat_app_server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "index.js"
+	},
+	"author": "Manoj Kumar <manojswami600@gmail.com>",
+	"dependencies": {
+		"graphql": "^14.1.1",
+		"graphql-subscriptions": "^1.0.0",
+		"graphql-yoga": "^1.18.3",
+		"mongoose": "^5.4.12",
+		"subscriptions-transport-ws": "^0.9.15"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.10"
+	}
+}

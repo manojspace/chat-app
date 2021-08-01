@@ -1,0 +1,3 @@
+{
+	"DB_URL": "mongodb+srv://chat_app:de6oblZ9IEkHXg8P@chat-app.qanii.mongodb.net/chat-app-db?retryWrites=true&w=majority"
+}

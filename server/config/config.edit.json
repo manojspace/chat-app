@@ -1,0 +1,3 @@
+{
+	"DB_URL": "mongodb+srv://<database_user_name>:<database_user_password>@chat-app.qanii.mongodb.net/<database_name>?retryWrites=true&w=majority"
+}
