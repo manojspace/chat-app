@@ -8,28 +8,29 @@ const User = props => {
 		selectedMail(mail, user);
 	}, [selectedMail]);
 
-	const deleteUserFunction = useCallback(() => {
-		deleteUser(email);
+	const deleteUserFunction = useCallback(async() => {
+		await deleteUser(email);
+		window.location.href = window.location.href;
 	}, [deleteUser, email]);
 
 	return (
 		<div className="user-welcome" style={props.style}>
 		<div className="user-heading">
-			<p>Hello, {name}</p>
+			<p style={{margin: 'unset'}}>Hello, {name}</p>
 			<Button
 			className="leave"
 			size="small"
 			variant="outlined"
 			onClick={deleteUserFunction}
 			>
-			Leave Chat?
+				Leave Chat?
 			</Button>
 		</div>
 		<div className="select-user">
-		{users.map(item =>
+		{users.map((item, index) =>
 			item.email !== email ? (
 				<div
-				key={item.id}
+				key={index}
 				className="users"
 				onClick={() => selectUserFunction(item.email, item.name)}
 				>

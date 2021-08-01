@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import {flowRight as compose} from 'lodash';
 import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
 import {
@@ -8,7 +9,7 @@ import {
 	UserTypingMutation,
 	MessageSubscription,
 	UserTypingSubscription
-} from '../schema/message';
+} from '../schema/message'; 
 
 const Message = props => {
 	const chatBox = useRef(null);
@@ -130,50 +131,57 @@ const Message = props => {
 			</div>
 			</div>
 			<div className="all-messages">
-			{messages.map(item =>
-				(item.senderMail === email && item.receiverMail === receiverMail) ||
-				(item.senderMail === receiverMail && item.receiverMail === email) ? (
+			{
+				messages.map(item =>
+				((item.senderMail === email && item.receiverMail === receiverMail) ||
+				(item.senderMail === receiverMail && item.receiverMail === email)) ?(
 					<div
 					key={item.id}
-					className={item.users.map(a =>
-						a.email === receiverMail ? 'receiver' : 'sender'
-						)}
+					className={
+						item.users.map(a => a.email === receiverMail ? 'receiver' : 'sender')
+					}
 					>
-					<div className="sender-name">{item.users.map(x => x.name)}</div>
-					{item.message}{' '}
-					<span className="time"> {moment(item.timestamp).fromNow()}</span>
+						<div className="sender-name">{item.users.map(x => x.name)}</div>
+						{item.message}{' '}
+						<span className="time"> {moment(item.timestamp).fromNow()}</span>
 					</div>
-					) : (
-					''
 					)
-					)}
-			{userLeft && userLeft === receiverMail ? (
+					 : 
+					('')
+					)
+			}
+			{
+				userLeft && userLeft === receiverMail ? 
 				<div>{receiverName} has left the chat. </div>
-				) : null}
+				 : 
+				 null
+			}
 			</div>
-			{receiverMail && receiverName && !userLeft ? (
+			{
+				receiverMail && receiverName && !userLeft ?
 				<form
 				onSubmit={e => handleSubmit(e, message, email)}
 				ref={chatBox}
 				className="chat-box"
 				>
-				<TextField
-				style={{ margin: 10 }}
-				placeholder={'Say something to ' + receiverName}
-				fullWidth
-				name="message"
-				value={message}
-				onChange={handleChange}
-				margin="normal"
-				variant="outlined"
-				/>
+					<TextField
+					style={{ margin: 10 }}
+					placeholder={'Say something to ' + receiverName}
+					fullWidth
+					name="message"
+					value={message}
+					onChange={handleChange}
+					margin="normal"
+					size="small"
+					variant="outlined"
+					/>
 				</form>
-				) : (
+				:
 				<div className="select-message">
-				Select a logged in user from the left panel
+					Select a logged in user from the left panel
 				</div>
-				)}
-				</div>
+			}
+			</div>
 				);
 };
 

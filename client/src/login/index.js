@@ -1,18 +1,58 @@
-import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
+import React, {useState} from 'react';
+import {LockOutlined} from '@material-ui/icons';
+import {Container, Typography, Box, Link, TextField, CssBaseline, Button, Avatar, Paper} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import validator from "validator";
 
-const Registration = props => {
+function Copyright() {
+	return (
+		<Typography variant="body2" color="textSecondary" align="center">
+			{'Copyright © '}
+			<Link color="inherit" href="manojspace.com">
+				manojspace.com
+			</Link>{' '}
+			{new Date().getFullYear()}
+			{'.'}
+		</Typography>
+		);
+}
+
+const useStyles = makeStyles((theme) => ({
+	paper: {
+		marginTop: theme.spacing(8),
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		marginLeft: '15px',
+		marginRight: '15px'
+	},
+	avatar: {
+		margin: theme.spacing(1),
+		backgroundColor: theme.palette.secondary.main,
+	},
+	form: {
+		width: '100%',
+		marginTop: theme.spacing(1),
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+	},
+	error: {
+		color: 'red'
+	}
+}));
+
+export default function SignIn(props) {
+	const classes = useStyles();
 	const [token, setToken] = useState({ name: "", email: "" });
 	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const handleChange = e => {
 		setToken({ ...token, [e.target.name]: e.target.value });
 	};
 
-	const validate = () => {
+	const validate = async () => {
 		const { name, email } = token;
 
 		const existingUser = props.users.some(function(user) {
@@ -32,44 +72,77 @@ const Registration = props => {
 		}
 
 		if (name.length && validator.isEmail(email) && !existingUser) {
+			setLoading(true);
 			setError("");
-			props.createUser(email, name);
+			await props.createUser(email, name);
+			setLoading(false);
 			localStorage["token"] = JSON.stringify(token);
+			window.location.href = window.location.href;
 		}
 	};
 
 	const { name, email } = token;
-	return (
-		<Paper elevation={3} className="paper">
-		User Details
-		<TextField
-		required
-		id="outlined-name"
-		label="Name"
-		name="name"
-		value={name}
-		onChange={handleChange}
-		variant="outlined"
-		style={{ margin: 10 }}
-		/>
-		<TextField
-		required
-		id="outlined-email-input"
-		type="email"
-		label="Email"
-		name="email"
-		value={email}
-		onChange={handleChange}
-		variant="outlined"
-		className="text-area"
-		style={{ margin: 10 }}
-		/>
-		<Button variant="contained" onClick={validate} style={{ margin: 15 }}>
-		Enter Chat
-		</Button>
-		<div>{error}</div>
-		</Paper>
-		);
-};
 
-export default Registration;
+	return (
+		<Container component="main" maxWidth="xs" style={{marginBottom: '20px'}}>
+			<Paper>
+			<CssBaseline />
+			<div className={classes.paper}>
+				<Avatar className={classes.avatar}>
+					<LockOutlined />
+				</Avatar>
+				<Typography component="h1" variant="h5">
+					Sign in
+				</Typography>
+				<form className={classes.form} noValidate>
+					<TextField
+					variant="outlined"
+					margin="normal"
+					required
+					fullWidth
+					id="name"
+					label="Name"
+					name="name"
+					size="small"
+					autoFocus
+					value={name}
+					onChange={handleChange}
+					error={(!name && error)?true:false}
+					helperText={(!name && error)?"Please enter your name to enter into chat":null}
+					/>
+					<TextField
+					variant="outlined"
+					margin="normal"
+					required
+					fullWidth
+					name="email"
+					label="Email"
+					type="email"
+					id="email"
+					size="small"
+					value={email}
+					onChange={handleChange}
+					error={(!email && error)?true:false}
+					helperText={(!email && error)?"Please enter email address to enter into chat":null}
+					/>
+					<Button
+					type="button"
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={classes.submit}
+					disabled={loading}
+					onClick={validate}
+					>
+						{loading?"Please wait...":"Submit"}
+					</Button>
+					<div style={{color: 'red'}}>{error}</div>
+				</form>
+			</div>
+			<Box mt={8}>
+				<Copyright />
+			</Box>
+			</Paper>
+		</Container>
+		);
+}

@@ -1,7 +1,7 @@
 const { PubSub, withFilter } = require("graphql-yoga");
-const { User, Message } = require('../models');
+const { User, Message } = require('../models/index');
 
-const services = {
+const Services = {
 	Query: {
 		users: () => User.find(),
 		messages: () => Message.find()
@@ -118,4 +118,4 @@ const services = {
 
 const pubsub = new PubSub();
 
-module.exports = services;
+module.exports = Services;

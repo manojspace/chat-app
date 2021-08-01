@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import User from './users';
 import Message from './messages';
 import Registration from './login';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import {flowRight as compose} from 'lodash';
 import {
 	UserQuery,
 	CreateUserMutation,
@@ -67,7 +68,7 @@ const App = props => {
 	}, [props.data]);
 
 	const createUser = async (email, name) => {
-		await props.createUser({
+		return await props.createUser({
 			variables: {
 				email,
 				name
@@ -84,7 +85,7 @@ const App = props => {
 
 	const deleteUser = async email => {
 		localStorage.removeItem('token');
-		await props.deleteUser({
+		return await props.deleteUser({
 			variables: { email },
 			update: store => {
 				const data = store.readQuery({ query: UserQuery });
