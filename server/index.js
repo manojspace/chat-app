@@ -7,7 +7,8 @@ const config = require('./config/config.json');
 mongoose.connect(config.DB_URL, {
 	useNewUrlParser: true,
 	useFindAndModify: false,
-	useCreateIndex: true
+	useCreateIndex: true,
+	useUnifiedTopology: true
 });
 
 const pubsub = new PubSub();

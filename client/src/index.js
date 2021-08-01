@@ -12,11 +12,11 @@ import App from "./App";
 import "./assets/style.css";
 
 const httpLink = new HttpLink({
-	uri: 'http://localhost:4000/'
+	uri: 'http://manojspace.com:4000/'
 });
 
 const wsLink = new WebSocketLink({
-	uri: `ws://localhost:4000/`,
+	uri: `ws://manojspace.com:4000/`,
 	options: {
 		reconnect: true,
 		lazy: true,
