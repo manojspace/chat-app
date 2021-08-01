@@ -13,7 +13,7 @@ mongoose.connect(config.DB_URL, {
 const pubsub = new PubSub();
 const server = new GraphQLServer({typeDefs, resolvers, context: {pubsub}});
 const options = {
-	port: 8000
+	port: 4000
 }
 mongoose.connection.once("open", () =>
 	server.start(options, ({port}) => console.log(`Listening at localhost:${port}`))
